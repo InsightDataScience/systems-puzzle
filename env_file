@@ -1,0 +1,4 @@
+POSTGRES_USER=docker_pg
+POSTGRES_PASSWORD=helloworld
+POSTGRES_DB=flaskapp_db
+APP_SECRET_KEY=super_duper_secret

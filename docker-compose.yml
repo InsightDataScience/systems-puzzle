@@ -1,0 +1,38 @@
+version: '3'
+services:
+  db:
+    image: "postgres:9.6.5"
+    volumes:
+      - "dbdata:/var/lib/postgresql/data"
+    env_file:
+      - env_file
+    networks:
+      - db_network
+  flaskapp:
+    build: .
+    env_file:
+      - env_file
+    volumes:
+      - .:/opt/services/flaskapp/src
+    networks:
+      - db_network
+      - web_network
+    depends_on:
+      - db
+  nginx:
+    image: "nginx:1.13.5"
+    ports:
+      - "80:8080"
+    volumes:
+      - ./conf.d:/etc/nginx/conf.d
+    networks:
+      - web_network
+    depends_on: 
+      - flaskapp
+networks:
+  db_network:
+    driver: bridge
+  web_network:
+    driver: bridge
+volumes:
+  dbdata:
